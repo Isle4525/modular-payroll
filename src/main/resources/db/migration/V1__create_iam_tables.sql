@@ -1,0 +1,20 @@
+CREATE TABLE companies(
+    id BIGSERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    bin VARCHAR(20) UNIQUE,
+    requisites JSONB DEFAULT '{}',
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+CREATE TYPE user_role AS ENUM ('ADMIN', 'MANAGER', 'ACCOUNTANT', 'CONTRACTOR');
+
+CREATE TABLE users(
+    id BIGSERIAL PRIMARY KEY,
+    username VARCHAR(150) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE ,
+    password VARCHAR(255) NOT NULL,
+    role user_role NOT NULL,
+    company_id BIGINT REFERENCES companies(id) ON DELETE CASCADE,
+    is_self_employed BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);

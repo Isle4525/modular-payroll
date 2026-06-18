@@ -1,0 +1,27 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/payout
+    username: admin
+    password: 1234
+    driver-class-name: org.postgresql.Driver
+
+    jpa:
+      hibernate:
+        ddl-auto: validate
+      show-sql: true
+      properties:
+        hibernate:
+          format_sql: true
+
+    flyway:
+      enabled: true
+      location: classpath:db/migration
+      baseline-on-migrate: true
+
+    jwt:
+      secret: tsss
+      expiration: 8640000
+
+    logging:
+      level:
+        org.flywaydb: DEBUG
