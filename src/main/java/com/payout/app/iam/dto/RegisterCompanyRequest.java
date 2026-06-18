@@ -20,6 +20,6 @@ public class RegisterCompanyRequest {
     @NotBlank(message = "Password is required")
     @Size(min = 8, message = "Pass must be at least 8")
     private String password;
-    
+
 
 }
