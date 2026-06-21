@@ -1,4 +1,4 @@
-package com.payout.app.iam.config;
+package com.payout.app.config;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;

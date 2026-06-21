@@ -1,4 +1,4 @@
-package com.payout.app.iam.config;
+package com.payout.app.config;
 
 import com.payout.app.iam.security.JwtAuthFilter;
 
