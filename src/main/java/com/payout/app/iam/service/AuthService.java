@@ -94,4 +94,9 @@ public class AuthService {
                 .company(companyResponse)
                 .build();
     }
+
+    public UserResponse getCurrentUser(User user) {
+        return toUserResponse(user);
+    }
+
 }

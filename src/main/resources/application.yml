@@ -18,10 +18,11 @@ spring:
       location: classpath:db/migration
       baseline-on-migrate: true
 
-    jwt:
-      secret: tsss
-      expiration: 8640000
 
-    logging:
-      level:
-        org.flywaydb: DEBUG
+      logging:
+        level:
+          org.flywaydb: DEBUG
+
+jwt:
+  secret: WCFqULU3JUtPEUluTH6eJ3fZuxDoYh0I
+  expiration: 8640000
