@@ -7,7 +7,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
-class  RegisterContractorRequest {
+public class  RegisterContractorRequest {
 
     @NotBlank
     private String userame;
