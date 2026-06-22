@@ -95,8 +95,8 @@ public class TaskService {
             throw new AccessDeniedException("You are not allowed to perform this action");
         }
 
-        //create contract if contract not exist
-        if (task.getContract() != null){
+        // Create a contract only once, when the task has no linked contract yet.
+        if (task.getContract() == null){
             var template = contractTemplateRepository.findByCompanyId(task.getCompany().getId())
                     .stream().findFirst().orElse(null);
 

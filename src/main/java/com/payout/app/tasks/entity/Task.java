@@ -37,7 +37,7 @@ public class Task {
 
     @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "assigned_by")
+    @JoinColumn(name = "assigned_to")
     private User assignedTo;
 
     @ToString.Exclude
