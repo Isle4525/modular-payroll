@@ -1,8 +1,13 @@
 spring:
+
+  server:
+    address: 0.0.0.0
+    port: ${PORT:8080}
+
   datasource:
-    url: jdbc:postgresql://localhost:5432/payout
-    username: admin
-    password: 1234
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/payout}
+    username: ${SPRING_DATASOURCE_USERNAME:admin}
+    password: ${SPRING_DATASOURCE_PASSWORD:1234}
     driver-class-name: org.postgresql.Driver
 
     jpa:
@@ -24,5 +29,5 @@ spring:
           org.flywaydb: DEBUG
 
 jwt:
-  secret: WCFqULU3JUtPEUluTH6eJ3fZuxDoYh0I
+  secret: ${JWT_SECRET:WCFqULU3JUtPEUluTH6eJ3fZuxDoYh0I}
   expiration: 8640000
