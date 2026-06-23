@@ -20,9 +20,9 @@ public class PaymentController {
 
     private final PaymentService paymentService;
 
-    @PostMapping("/tasks//{id}")
-    public ResponseEntity<PaymentResponse> createPayment(@AuthenticationPrincipal User user, @PathVariable Long taskId) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(paymentService.createPayment(user, taskId));
+    @PostMapping("/tasks/{id}")
+    public ResponseEntity<PaymentResponse> createPayment(@AuthenticationPrincipal User user, @PathVariable Long id) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(paymentService.createPayment(user, id));
     }
 
     @GetMapping
