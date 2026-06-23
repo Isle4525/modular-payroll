@@ -127,20 +127,21 @@ public class TaskService {
 
     @Transactional
     public TaskResponse approve(User user, Long taskId) {
-        if (user.getRole() != UserRole.CONTRACTOR) {
-            throw new AccessDeniedException("You are not allowed to perform this action");
+        if (user.getRole() == UserRole.CONTRACTOR) {
+            throw new AccessDeniedException("Contractors cannot approve tasks");
         }
 
         Task task = taskRepository.findById(taskId)
                 .filter(t -> t.getCompany().getId().equals(user.getCompany().getId()))
-                .orElseThrow(() -> new  EntityNotFoundException("Task not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Task not found"));
 
-        if (task.getStatus() != TaskStatus.REVIEW &&  task.getStatus() != TaskStatus.SUBMITTED) {            throw new IllegalStateException("Cannot approve task with status '" + task.getStatus() + "'");}
+        if (task.getStatus() != TaskStatus.REVIEW && task.getStatus() != TaskStatus.SUBMITTED) {
+            throw new IllegalStateException("Cannot approve task with status '" + task.getStatus() + "'");
+        }
 
         task.setStatus(TaskStatus.APPROVED);
         taskRepository.save(task);
         return toResponse(task);
-
     }
 
 
