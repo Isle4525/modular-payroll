@@ -7,6 +7,8 @@ import com.payout.app.contracts.entity.ContractTemplate;
 import com.payout.app.contracts.repository.ContractTemplateRepository;
 import com.payout.app.iam.entity.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,6 +19,7 @@ public class ContractTemplateService {
 
     private final ContractTemplateRepository contractTemplateRepository;
 
+    @CacheEvict(value = "contract-templates", key = "#user.company.id")
     public ContractTemplateResponse create(User user, ContractTemplateRequest request){
         ContractTemplate template = ContractTemplate.builder()
                 .company(user.getCompany())
@@ -31,6 +34,7 @@ public class ContractTemplateService {
 
     }
 
+    @Cacheable(value = "contract-templates", key = "#user.company.id")
     public List<ContractTemplateResponse> listForCompany(User user){
         return contractTemplateRepository.findByCompanyId(user.getCompany().getId())
                 .stream()
