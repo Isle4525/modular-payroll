@@ -16,6 +16,8 @@ import com.payout.app.tasks.repository.TaskRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +36,7 @@ public class TaskService {
     private final ContractTemplateRepository contractTemplateRepository;
 
     @Transactional
+    @CacheEvict(value = "tasks", key = "#currentUser.id")
     public TaskResponse create(User currentUser, TaskCreateRequest taskCreateRequest) {
         if (currentUser.getRole() == UserRole.CONTRACTOR) {
             throw new AccessDeniedException("You are not allowed to perform this action");
@@ -62,6 +65,7 @@ public class TaskService {
     }
 
 
+    @Cacheable(value = "tasks", key = "#user.id")
     public List<TaskResponse> listForUser(User user) {
         List<Task> tasks;
         if (user.getRole() == UserRole.CONTRACTOR) {
@@ -79,6 +83,7 @@ public class TaskService {
 
 
     @Transactional
+    @CacheEvict(value = "tasks", key = "#user.id")
     public TaskResponse accept(User user, Long taskId) {
 
         if (user.getRole() != UserRole.CONTRACTOR) {
@@ -127,6 +132,7 @@ public class TaskService {
 
 
     @Transactional
+    @CacheEvict(value = "tasks", key = "#user.id")
     public TaskResponse approve(User user, Long taskId) {
         if (user.getRole() == UserRole.CONTRACTOR) {
             throw new AccessDeniedException("Contractors cannot approve tasks");
@@ -147,6 +153,7 @@ public class TaskService {
 
 
     @Transactional
+    @CacheEvict(value = "tasks", key = "#user.id")
     public TaskResponse reject(User user, Long taskId) {
         if (user.getRole() != UserRole.CONTRACTOR) {
             throw new AccessDeniedException("You are not allowed to perform this action");
