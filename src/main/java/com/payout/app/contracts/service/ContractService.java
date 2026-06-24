@@ -14,6 +14,8 @@ import com.payout.app.iam.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +32,7 @@ public class ContractService {
     private final UserRepository userRepository;
 
     @Transactional
+    @CacheEvict(value = "contracts", key = "#currentUser.id")
     public ContractResponse create(User currentUser, ContractCreateRequest request) {
         User contracor = userRepository.findById(request.getContractorId())
                 .filter(u -> u.getRole() == UserRole.CONTRACTOR)
@@ -55,6 +58,7 @@ public class ContractService {
     }
 
 
+    @Cacheable(value = "contracts", key = "#user.id")
     public List<ContractResponse> listForUser(User user) {
         List<Contract> contracts;
         if (user.getRole() == UserRole.CONTRACTOR) {
@@ -75,6 +79,7 @@ public class ContractService {
 
 
     @Transactional
+    @CacheEvict(value = "contracts", key = "#user.id")
     public ContractResponse sign(User user, Long contractId) {
         Contract contract = contractRepository.findByIdAndContractorId(contractId, user.getId())
                 .orElseThrow(() -> new AccessDeniedException("You can only sign your own contracts"));
