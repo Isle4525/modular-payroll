@@ -36,7 +36,7 @@ public class TaskService {
     private final ContractTemplateRepository contractTemplateRepository;
 
     @Transactional
-    @CacheEvict(value = "tasks", key = "#currentUser.id")
+    @CacheEvict(value = "tasks", allEntries = true)
     public TaskResponse create(User currentUser, TaskCreateRequest taskCreateRequest) {
         if (currentUser.getRole() == UserRole.CONTRACTOR) {
             throw new AccessDeniedException("You are not allowed to perform this action");
@@ -83,7 +83,7 @@ public class TaskService {
 
 
     @Transactional
-    @CacheEvict(value = "tasks", key = "#user.id")
+    @CacheEvict(value = "tasks", allEntries = true)
     public TaskResponse accept(User user, Long taskId) {
 
         if (user.getRole() != UserRole.CONTRACTOR) {
@@ -132,7 +132,7 @@ public class TaskService {
 
 
     @Transactional
-    @CacheEvict(value = "tasks", key = "#user.id")
+    @CacheEvict(value = "tasks", allEntries = true)
     public TaskResponse approve(User user, Long taskId) {
         if (user.getRole() == UserRole.CONTRACTOR) {
             throw new AccessDeniedException("Contractors cannot approve tasks");
@@ -153,7 +153,7 @@ public class TaskService {
 
 
     @Transactional
-    @CacheEvict(value = "tasks", key = "#user.id")
+    @CacheEvict(value = "tasks", allEntries = true)
     public TaskResponse reject(User user, Long taskId) {
         if (user.getRole() != UserRole.CONTRACTOR) {
             throw new AccessDeniedException("You are not allowed to perform this action");
