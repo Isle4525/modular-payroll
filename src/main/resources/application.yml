@@ -3,6 +3,19 @@ server:
   port: ${PORT:8080}
 
 spring:
+  data:
+    redis:
+      host: ${REDISHOST:localhost}
+      port: ${REDISPORT:6379}
+      password: ${REDISPASSWORD:} # Обязательно добавляем, так как в облаке Redis защищен паролем
+      timeout: 2000ms
+
+  cache:
+    type: redis
+    redis:
+      time-to-live: 300000  # 5 минут (в Spring Boot этот параметр принимает и миллисекунды, и формат длительности, например 5m)
+      cache-null-values: false # Хорошая практика: не забивать кэш пустыми ответами
+
   datasource:
     url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/payout}
     username: ${SPRING_DATASOURCE_USERNAME:admin}
