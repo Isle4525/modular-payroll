@@ -6,7 +6,7 @@ services:
     container_name: payouts_db
     restart: always
     environment:
-      POSTGRES_DB: payout
+      POSTGRES_DB: payoutxx1
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: 1234
     ports:
