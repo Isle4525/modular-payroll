@@ -35,17 +35,30 @@ Backend MVP для платформы выплат подрядчикам. Се�
 
 ## Архитектура модулей
 
+Проект собирается как модульный монолит: один Spring Boot сервис и одна база данных, код предметных областей собирается отдельными Maven-модулями.
+
 ```text
-src/main/java/com/payout/app
-├── iam          # пользователи, компании, JWT auth
-├── tasks        # задачи и жизненный цикл задач
-├── contracts    # договоры и шаблоны договоров
-├── submissions  # отправка результатов работы
-├── payments     # MVP-выплаты
-└── config       # security, cors, swagger, errors, cache
+payout-app       # запускаемое приложение, общая конфигурация и Flyway
+├── iam           # пользователи, компании, JWT auth
+├── contracts     # договоры и шаблоны договоров; зависит от iam
+├── tasks         # задачи; зависит от iam и contracts
+├── submissions   # результаты работ; зависит от iam и tasks
+└── payments      # выплаты; зависит от iam, tasks и contracts
 ```
 
-Миграции базы находятся в `src/main/resources/db/migration`.
+Модули объявлены в корневом `pom.xml`. Общие HTTP и JPA модели пока используют Spring Data и связи между сущностями из соседних областей; поэтому это физическое разделение Maven-сборки, а не независимые сервисы. Общая конфигурация приложения находится в `payout-app/src/main/java/com/payout/app/config`, миграции — в `payout-app/src/main/resources/db/migration`.
+
+Собрать приложение и необходимые модули:
+
+```bash
+./mvnw -pl payout-app -am package
+```
+
+Запустить собранный сервис:
+
+```bash
+java -jar payout-app/target/payout-app-0.0.1-SNAPSHOT.jar
+```
 
 ## Требования
 
@@ -291,7 +304,7 @@ Content-Type: application/json
 
 ## Тесты
 
-Запуск тестов:
+Запуск всех тестов из корня проекта:
 
 ```bash
 ./mvnw test
